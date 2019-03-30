@@ -1,0 +1,301 @@
+body {
+            background: #ddd;
+            font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+            color: #817c7c;
+        }
+        a {
+            text-decoration: none;
+            color: #817c7c;
+        }
+        ol, li {
+            list-style: none;
+        }
+        #header {
+            height: 200px;
+            background-color: #2ca6cb;
+            display: block;
+        }
+        #footer {
+            height: 300px;
+            margin-top: 1em;
+            background-color: #1f1f1f;
+            padding: 0 2% 0.5em;
+        }
+        .footer {
+            width: 95%;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+        .line {
+            width: 10em;
+            height: 14em;
+            margin: 0 auto;
+            float: left;
+            position: relative;
+        }
+        .line span {
+            display: block;
+            width: 3.5em;
+            height: 6.25em;
+            border-right: 0.125em solid #fff;
+        }
+        .author {
+            width: 7em;
+            height: 7em;
+            background: no-repeat url('/static/img/programmer.jpg') left top;
+            background-size: 7em 7em;
+            border-radius: 3.5em;
+        }
+        .info {
+            margin: 4.5em 0 2em 0;
+            width: 70%;
+            font-size: 150%;
+            line-height: 1.3em;
+            color: #fff;
+            float: left;
+        }
+        .social {
+            width: 20%;
+            position: absolute;
+            right: -2em;
+            top: 3em;
+        }
+        .copyright{
+            float: left;
+            width: 100%;
+            color: #fff;
+            text-align: center;
+        }
+        .social a {
+            float: left;
+            display: block;
+            color: #fff;
+            font-size: 185%;
+            margin-left: 20px;
+        }
+        .icon-github {
+            width: 2em;
+            height: 2em;
+            background-size: 7em 7em;
+            border-radius: 3.5em;
+            background: no-repeat url('/static/img/github.jpg') left top;
+        }
+        .icon-blog {
+            width: 2em;
+            height: 2em;
+            background-size: 7em 7em;
+            border-radius: 3.5em;
+            background: no-repeat url('/static/img/blog.jpg') left top;
+        }
+        .icon-zhihu {
+            width: 2em;
+            height: 2em;
+            background-size: 7em 7em;
+            border-radius: 3.5em;
+            background: no-repeat url('/static/img/zhihu.jpg') left top;
+        }
+        nav {
+            float: right;
+        }
+        #container {
+            clear: both;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #main {
+            float: left;
+            width: 65%;
+            margin: 2em 0.5em 2em 8em;
+            
+        }
+        article {
+            background-color: #fafafa;
+            margin-bottom: 3.5em;
+        }
+        .article_info {
+            border-bottom: 1px solid #dbdbdb;
+        }
+        .article_info h1 {
+            font-size: 200%;
+            padding: 0.2em 3%;
+            line-height: 1.5;
+            border-left: 5px solid #2ca6cb
+        }
+        .article_info h1 a {
+            color: #2ca6cb;
+        }
+        .article_author {
+            float: right;
+            padding: 0.3em 4% 0.3em 0;
+        }
+        .article_author a {
+            color: #2ca6cb;
+        }
+        .article_time {
+            float: right;
+            margin-right: 1em;
+            padding-top: 0.1em;
+        }
+        .article_content {
+            padding: 1.5em 4%;
+            color: #413f3f;
+        }
+        .article_content p {
+            line-height: 1.5;
+        }
+        .article_more {
+
+        }
+        .article_catetags {
+            width: 70%;
+            padding: 0.5em 0 0.5em 2em;
+            float: left;
+        }
+        .article_footer {
+            border-top: 1px solid #dbdbdb;
+            background: #fafafa;
+            padding: 0 4%;
+            margin: 0;
+            height: 40px;
+            float: none;
+        }
+        .zan {
+            padding-top: 10px;
+            height: 20px;
+            width: 20px;
+        }
+        .comment {
+            padding-top:10px;
+            padding-left:80px;
+            height: 20px;
+            width: 20px;
+        }
+        .label {
+            width: 10%;
+            padding-left: 20px;
+        }
+        .context {
+            width: 40%;
+            padding-left: 10px;
+        }
+        #sidebar {
+            position: relative;
+            float: left;
+            width: 18%;
+            height: 400px;
+            margin: 2em 0 0 2em;
+            background: #fafafa;
+        }
+        .linkslist {
+            float: none;
+            margin: 1em 2em 0 2em;
+        }
+        .linkslist ul {
+            padding: 0.5em 0;
+        }
+        .linkslist ul a {
+            line-height: 1.5;
+            display: block;
+            padding: 0 3%;
+        }
+        .asidetitle {
+            font-size: 1.1em;
+            color: #2ca6cb;
+            padding: 0 0 0.3em 0;
+            border-bottom: 0.2em solid #ccc;
+        }
+        .rsspart {
+            background: #2ca6cb;
+            float: none;
+            margin: 1em 2em 0 2em;
+        }
+        .rsspart a {
+            color: #fff;
+            display: block;
+            padding: 0.6em 0;
+            text-align: center;
+        }
+        .weiboshow {
+            margin: 0 2em 0 2em;
+        }
+        .weiboshow ul {
+            padding: 0.5em 0;
+        }
+        .weiboshow ul a {
+            line-height: 1.5;
+            display: block;
+            padding: 0 3%;
+        }
+        .zhihushow {
+            margin: 0 2em 0 2em;
+        }
+        .zhihushow ul {
+            padding: 0.5em 0;
+        }
+        .zhihushow ul a {
+            line-height: 1.5;
+            display: block;
+            padding: 0 3%;
+        }
+        .header_img {
+            margin: 20px 10px 30px 80px;
+            float: left;
+        }
+        .header_title {
+            margin: 40px auto auto 0px;
+            float: left;
+            color: white;
+            font-size: 3em;
+        }
+        ul.header_nav {
+            margin: 140px 50px auto auto;
+            padding-left: 20px;
+        }
+        .header_nav li {
+            list-style: none;
+            float: left;
+            margin-right: 10px;
+        }
+        .header_nav a{
+            display: block;
+            padding: 7px 30px 4px 30px;
+            color: white;
+            font-size: 1.3em;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .header_nav a:hover{
+            color: #f90;
+        }
+        .search {
+            padding: 0.6em 0 0 1em;
+        }
+        .search input {
+            width: 8em;
+            font-size: 0.9em;
+            line-height: 1.7;
+            border: 1px solid #fff;
+            color: #fff;
+            background: transparent;
+            padding-left: 0.5em;
+        }
+        .actions {
+            float: right;
+        }
+        .actions li {
+            list-style: none;
+            float: left;
+            margin-right: 20px;
+        }
+        .comment_form {
+            border-top: 1px solid #dbdbdb;
+        }
+        .comment_div {
+            margin-left: 2%;
+        }
+        .input {
+            margin-top:10px;
+            margin-bottom:10px;
+        }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鸡蛋有点黄的博客</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+<header id="header">
+    <img src="/static/img/love.jpg" class="header_img">
+    <h3 class="header_title">
+        鸡蛋有点黄的博客
+    </h3>
+    <nav>
+        <ul class="header_nav">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/article">文章</a>
+            </li>
+            <li>
+                <a href="/about">关于</a>
+            </li>
+            <li>
+                <form class="search" action="/search" method="get" accept-charset="utf-8">
+                    <input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="搜索">
+                </form>
+            </li>
+        </ul>
+    </nav>
+</header>
+    <div id="container">
+        {{ .LayoutContent }}
+        {{ if .sidebar }}
+            {{ .sidebar }}
+        {{ else }}
+        <div id="sidebar">
+            <aside class="clearfix">
+                <div class="linkslist">
+                    <p class="asidetitle">友情链接</p>
+                    <ul>
+                        <a href="http://www.cnblogs.com">博客园</a>
+                    </ul>
+                </div>
+                <div class="weiboshow">
+                    <p class="asidetitle">新浪微博</p>
+                    <ul>
+                        <a href="#">已废弃</a>
+                    </ul>
+                </div>
+                <div class="rsspart">
+                    <a href="#">RSS订阅</a>
+                </div>
+            </aside>
+        </div>
+        {{ end }}
+    </div>
+<footer id="footer">
+    <div class="footer">
+        <div class="line">
+            <span></span>
+            <div class="author"></div>
+        </div>
+        <section class="info">
+            <p>欢迎,我是鸡蛋有点黄
+                <br>
+                这是我的博客
+            </p>
+        </section>
+        <div class="social">
+            <a href="http://www.cnblogs.com/lgh344902118/" class="icon-blog" title="博客园"></a>
+            <a href="https://github.com/lin344902118" class="icon-github" title="github"></a>
+            <a href="" class="icon-zhihu" title="知乎"></a>
+        </div>
+        <p class="copyright">by 鸡蛋有点黄</p>
+    </div>
+</footer>
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+{{ .script }}
+</html>

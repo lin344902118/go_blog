@@ -1,0 +1,12 @@
+<div class="list-group">
+    {{ range $index, $blog := .blogs }}
+    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">标题: {{ $blog.Title }}</h5>
+            <small>发布时间: {{ $blog.PublicTime }}</small>
+        </div>
+        <p class="mb-1">内容: {{ $blog.Content}}</p>
+        <small>分类: {{ $blog.Category }}</small>
+    </a>
+    {{ end }}
+</div>
