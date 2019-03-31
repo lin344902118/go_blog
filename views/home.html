@@ -1,28 +1,30 @@
 <div id="main">
     {{ range $index, $blog := .blogs }}
-        <header class="article_info">
-            <h1>
-                <a href="">{{ $blog.Title }}</a>
-            </h1>
-            <p class="article_author">
-                By
-                <a href="/about">
-                    {{ $blog.Author }}
+        <article>
+            <header class="article_info">
+                <h1>
+                    <a href="">{{ $blog.Title }}</a>
+                </h1>
+                <p class="article_author">
+                    By
+                    <a href="/about">
+                        {{ $blog.Author.Username }}
+                    </a>
+                </p>
+                <p class="article_time">
+                    <time>发表于{{ $blog.PublicTime }}</time>
+                </p>
+            </header>
+            <div class="article_content">
+                <a href="">
+                    {{ $blog.Content }}
                 </a>
-            </p>
-            <p class="article_time">
-                <time>发表于{{ $blog.PublicTime }}</time>
-            </p>
-        </header>
-        <div class="article_content">
-            <a href="">
-                {{ $blog.Content }}
-            </a>
-        </div>
-        <footer class="article_footer">
-            <div class="article_catetags">
-                {{ $blog.Category }}
             </div>
-        </footer>
-    {{end }}
+            <footer class="article_footer">
+                <div class="article_catetags">
+                    {{ $blog.Category }}
+                </div>
+            </footer>
+        </article>
+    {{ end }}
 </div>

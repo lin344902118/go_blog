@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"go_blog/models"
 	"github.com/astaxie/beego/orm"
+	"go_blog/models"
 	"math/rand"
 )
 
@@ -36,4 +36,18 @@ func GetAllCategorys() ([]models.Category, error){
 	} else {
 		return categorys, nil
 	}
+}
+
+func GetBlog(fieldName string, fieldValue interface{}) (models.Blog, error){
+	o := orm.NewOrm()
+	var blog models.Blog
+	err := o.QueryTable("blog").Filter(fieldName, fieldValue).One(&blog)
+	return blog, err
+}
+
+func GetCategory(fieldName string, fieldValue interface{}) (models.Category, error){
+	o := orm.NewOrm()
+	var category models.Category
+	err := o.QueryTable("blog").Filter(fieldName, fieldValue).One(&category)
+	return category, err
 }

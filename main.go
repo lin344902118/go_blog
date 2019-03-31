@@ -1,13 +1,13 @@
 package main
 
 import (
-	_ "blog/models"
-	_ "blog/routers"
 	"github.com/astaxie/beego"
+	_ "go_blog/models"
+	_ "go_blog/routers"
 )
 
 func main() {
-	beego.SetStaticPath("/static", "D:\\gopath\\src\\blog\\static")
+	beego.SetStaticPath("/static", "D:\\gopath\\src\\go_blog\\static")
 	beego.SetLogger("file", `{"filename": "test.log"}`)
 	beego.BeeLogger.DelLogger("console")
 	beego.Run()

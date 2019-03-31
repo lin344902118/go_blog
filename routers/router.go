@@ -16,4 +16,6 @@ func init() {
     beego.Router("/register", &controllers.MainController{}, "get,post:Register")
     beego.Router("/admin/blog", &controllers.MainController{}, "get:Blog")
     beego.Router("/admin/category", &controllers.MainController{}, "get:Category")
+    beego.Router("/admin/blog/edit", &controllers.MainController{}, "get,Post:EditBlog")
+    beego.Router("/admin/category/edit", &controllers.MainController{}, "get,Post:EditCategory")
 }

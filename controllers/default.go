@@ -1,9 +1,12 @@
 package controllers
 
 import (
-	"go_blog/utils"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
+	"go_blog/models"
+	"go_blog/utils"
+	"strconv"
 )
 
 type MainController struct {
@@ -51,10 +54,10 @@ func (c *MainController) Admin() {
 		} else {
 			c.Data["username"] = user.Username
 			c.Data["current"] = "blog"
-			models := []map[string]string{}
-			models = append(models, map[string]string{"name": "blog", "active": "true"})
-			models = append(models, map[string]string{"name": "category", "active": "false"})
-			c.Data["models"] = models
+			tables := []map[string]string{}
+			tables = append(tables, map[string]string{"name": "blog", "active": "true"})
+			tables = append(tables, map[string]string{"name": "category", "active": "false"})
+			c.Data["tables"] = tables
 			c.TplName = "admin.html"
 		}
 	}
@@ -111,7 +114,6 @@ func (c *MainController) Register() {
 
 func (c *MainController) Blog() {
 	userId := c.GetSession("userId")
-	fmt.Println("userId", userId)
 	if userId == nil {
 		c.TplName = "login.html"
 	} else {
@@ -121,10 +123,10 @@ func (c *MainController) Blog() {
 		} else {
 			c.Data["username"] = user.Username
 			c.Data["current"] = "blog"
-			models := []map[string]string{}
-			models = append(models, map[string]string{"name": "blog", "active": "true"})
-			models = append(models, map[string]string{"name": "category", "active": "false"})
-			c.Data["models"] = models
+			tables := []map[string]string{}
+			tables = append(tables, map[string]string{"name": "blog", "active": "true"})
+			tables = append(tables, map[string]string{"name": "category", "active": "false"})
+			c.Data["tables"] = tables
 			c.Layout = "admin.html"
 			blogs, err := utils.GetAllBlogs()
 			if err != nil {
@@ -149,10 +151,10 @@ func (c *MainController) Category() {
 		}  else {
 			c.Data["username"] = user.Username
 			c.Data["current"] = "category"
-			models := []map[string]string{}
-			models = append(models, map[string]string{"name": "blog", "active": "false"})
-			models = append(models, map[string]string{"name": "category", "active": "true"})
-			c.Data["models"] = models
+			tables := []map[string]string{}
+			tables = append(tables, map[string]string{"name": "blog", "active": "false"})
+			tables = append(tables, map[string]string{"name": "category", "active": "true"})
+			c.Data["tables"] = tables
 			c.Layout = "admin.html"
 			categorys, err := utils.GetAllCategorys()
 			if err != nil {
@@ -161,6 +163,101 @@ func (c *MainController) Category() {
 			} else {
 				c.Data["categorys"] = categorys
 				c.TplName = "category.html"
+			}
+		}
+	}
+}
+
+func (c *MainController) EditBlog() {
+	userId := c.GetSession("userId")
+	if userId == nil {
+		c.TplName = "login.html"
+	} else {
+		user, err := utils.GetUser("id", userId.(int))
+		if err != nil {
+			c.TplName = "login.html"
+		}  else {
+			c.Data["username"] = user.Username
+			c.Data["current"] = "blog"
+			tables := []map[string]string{}
+			tables = append(tables, map[string]string{"name": "blog", "active": "true"})
+			tables = append(tables, map[string]string{"name": "category", "active": "false"})
+			c.Data["tables"] = tables
+			categorys, _ := utils.GetAllCategorys()
+			c.Data["categorys"] = categorys
+			c.Layout = "admin.html"
+			if c.Ctx.Input.Method() == "GET"{
+				blogId := c.Input().Get("id")
+				c.LayoutSections = make(map[string]string)
+				c.LayoutSections["Script"] = "tinymceScript.html"
+				c.Data["edit"] = "true"
+				if blogId == "" {
+					c.TplName = "editBlog.html"
+				} else {
+					id, err := strconv.Atoi(blogId)
+					if err != nil {
+						c.Data["error"] = "输入的id有误"
+					} else {
+						blog, err := utils.GetBlog("Id", id)
+						if err != nil {
+							c.Data["error"] = "id不存在"
+						} else {
+							c.Data["blog"] = blog
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func (c *MainController) EditCategory() {
+	userId := c.GetSession("userId")
+	if userId == nil {
+		c.TplName = "login.html"
+	} else {
+		user, err := utils.GetUser("id", userId.(int))
+		if err != nil {
+			c.TplName = "login.html"
+		}  else {
+			c.Data["username"] = user.Username
+			c.Data["current"] = "category"
+			tables := []map[string]string{}
+			tables = append(tables, map[string]string{"name": "blog", "active": "false"})
+			tables = append(tables, map[string]string{"name": "category", "active": "true"})
+			c.Data["tables"] = tables
+			c.Layout = "admin.html"
+			if c.Ctx.Input.Method() == "GET"{
+				categoryId := c.Input().Get("id")
+				c.Data["edit"] = "true"
+				if categoryId == "" {
+					c.TplName = "editCategory.html"
+				} else {
+					id, err := strconv.Atoi(categoryId)
+					if err != nil {
+						c.Data["error"] = "输入的id有误"
+					} else {
+						category, err := utils.GetCategory("Id", id)
+						if err != nil {
+							c.Data["error"] = "id不存在"
+						} else {
+							c.Data["category"] = category
+						}
+					}
+				}
+			} else {
+				categoryName := c.Input().Get("name")
+				categoryDescription := c.Input().Get("description")
+				category := models.Category{Name:categoryName,Description:categoryDescription}
+				fmt.Println("category", category)
+				o := orm.NewOrm()
+				id, err := o.Insert(&category)
+				if err != nil {
+					c.Data["error"] = "创建分类失败"
+				} else {
+					fmt.Println("id", id)
+					c.Redirect("/admin/category", 301)
+				}
 			}
 		}
 	}

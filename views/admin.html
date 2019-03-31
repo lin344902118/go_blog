@@ -30,12 +30,12 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                    {{ range $index, $model := .models }}
+                    {{ range $index, $table := .tables }}
                     <li class="nav-item">
-                        <a class="nav-link {{ if eq $model.active "true" }}active{{ end }}" href="/admin/{{ $model.name }}">
+                        <a class="nav-link {{ if eq $table.active "true" }}active{{ end }}" href="/admin/{{ $table.name }}">
                             <span data-feather="file"></span>
-                            {{ $model.name }}
-                            {{ if eq $model.active "true" }}
+                            {{ $table.name }}
+                            {{ if eq $table.active "true" }}
                                 <span class="sr-only">(current)</span>
                             {{ end }}
                         </a>
@@ -45,23 +45,26 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">{{ .current }}</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group mr-2">
-                        <button class="btn btn-sm btn-danger">新增</button>
+            {{ if .edit }}
+                {{ .LayoutContent }}
+            {{ else }}
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">{{ .current }}</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                            <button class="btn btn-sm btn-danger">新增</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {{ .LayoutContent }}
+                {{ .LayoutContent }}
+
+            {{ end }}
         </main>
     </div>
 </div>
 
 <script src="/static/js/jquery-3.2.1.min.js"></script>
-<script>window.jQuery || document.write('<script src="/static/bootstrap-4.0.0/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="/static/bootstrap-4.0.0/assets/js/vendor/popper.min.js"></script>
 <script src="/static/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
-
+{{ .Script }}
 </body>
 </html>

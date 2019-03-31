@@ -1,0 +1,18 @@
+<form class="form-group" method="post" action="/admin/blog/edit">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-describedby="basic-addon1" name="title">{{ .blog.Title }}
+    </div>
+    <div class="input-group">
+        <textarea class="form-control" name="content">{{ .blog.Content }}</textarea>
+    </div>
+    <div class="form-check">
+        {{ range $index, $category := .categorys }}
+            <input class="form-check-input" type="checkbox" id="{{ $category.Id }}">
+            <label class="form-check-label" for="defaultCheck1">
+               {{ $category.Name }}
+            </label>
+        {{ end }}
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">提交</button>
+    <button type="reset" class="btn btn-danger" style="margin-top: 20px">重置</button>
+</form>

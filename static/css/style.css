@@ -43,7 +43,7 @@ body {
         .author {
             width: 7em;
             height: 7em;
-            background: no-repeat url('/static/img/programmer.jpg') left top;
+            background: no-repeat url('../img/programmer.jpg') left top;
             background-size: 7em 7em;
             border-radius: 3.5em;
         }
@@ -79,21 +79,21 @@ body {
             height: 2em;
             background-size: 7em 7em;
             border-radius: 3.5em;
-            background: no-repeat url('/static/img/github.jpg') left top;
+            background: no-repeat url('../img/github.jpg') left top;
         }
         .icon-blog {
             width: 2em;
             height: 2em;
             background-size: 7em 7em;
             border-radius: 3.5em;
-            background: no-repeat url('/static/img/blog.jpg') left top;
+            background: no-repeat url('../img/blog.jpg') left top;
         }
         .icon-zhihu {
             width: 2em;
             height: 2em;
             background-size: 7em 7em;
             border-radius: 3.5em;
-            background: no-repeat url('/static/img/zhihu.jpg') left top;
+            background: no-repeat url('../img/zhihu.jpg') left top;
         }
         nav {
             float: right;

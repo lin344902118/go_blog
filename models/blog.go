@@ -10,12 +10,14 @@ type Category struct {
 	Id          int  `PK`
 	Name        string  `orm:"size(20)"`
 	Description string  `orm:"size(100);default('')"`
+	Blog        []*Blog  `orm:"rel(m2m)"`
 }
 
 type User struct {
 	Id              int  `PK`
 	Username        string  `orm:"size(20)"`
 	Password        string  `orm:"size(50)"`
+	Blog            []*Blog  `orm:"reverse(many)"`
 }
 
 type Blog struct {
@@ -25,13 +27,6 @@ type Blog struct {
 	Author       *User  `orm:"rel(fk)"`
 	Content      string  `orm:"size(5000)"`
 	Category     []*Category  `orm:"rel(m2m)"`
-	Votes        int  `orm:"default(0))"`
-}
-
-type BlogPic struct {
-	Id              int  `PK`
-    Filename        string  `orm:"size(200);null;"`
-    Img             string  ``
 }
 
 func init() {

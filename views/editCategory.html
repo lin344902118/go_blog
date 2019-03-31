@@ -1,0 +1,10 @@
+<form class="form-group" method="post" action="/admin/category/edit">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-describedby="basic-addon1" name="name">{{ .category.Name }}
+    </div>
+    <div class="input-group">
+        <textarea class="form-control" name="description">{{ .category.Description }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">提交</button>
+    <button type="reset" class="btn btn-danger" style="margin-top: 20px">重置</button>
+</form>
