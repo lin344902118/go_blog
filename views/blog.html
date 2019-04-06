@@ -1,0 +1,42 @@
+<div class="list-group">
+    {{ range $index, $blog := .blogs }}
+    <a href="/admin/blog/detail?id={{ $blog.Id }}" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">标题: {{ $blog.Title }}</h5>
+            <small>发布时间: {{ $blog.PublicTime }}</small>
+        </div>
+        <p class="mb-1">内容: {{ $blog.Content}}</p>
+        <small>分类: {{ $blog.Category }}</small>
+        <button class="btn btn-sm btn-primary" onclick="edit({{ $blog.Id }})">编辑</button>
+        <button class="btn btn-sm btn-danger" onclick="remove({{ $blog.Id }})">删除</button>
+    </a>
+    {{ end }}
+
+</div>
+
+<script type="application/javascript">
+    function edit(id) {
+        window.location.href = "/admin/blog/edit?id="+ id;
+    }
+    function remove(id) {
+        if (confirm("确认删除")) {
+            $.ajax({
+                type: "post",
+                url: "/admin/blog/delete?id=" + id,
+                data: "",
+                async: false,
+                success: function (data) {
+                    if (data.ret == 0) {
+                        window.location.href = "/admin/blog";
+                    }
+                    else {
+                        alert("删除博文失败!失败原因:" + data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("删除博文错误!错误原因:" + data);
+                }
+            });
+        }
+    }
+</script>

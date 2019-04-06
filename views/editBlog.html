@@ -1,6 +1,11 @@
-<form class="form-group" method="post" action="/admin/blog/edit">
+<form class="form-group" method="post" action="/admin/blog/edit" id="BlogInfo">
+    <input type="hidden" value="{{ .blog.Id }}" name="id">
+    <input type="hidden" value="{{ .blog.PublicTime}}" name="public_time">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" aria-describedby="basic-addon1" name="title">{{ .blog.Title }}
+        <div class="input-group-prepend">
+            <span class="input-group-text">标题</span>
+        </div>
+        <input type="text" class="form-control" aria-describedby="basic-addon1" name="title" value="{{ .blog.Title }}">
     </div>
     <div class="input-group">
         <textarea class="form-control" name="content">{{ .blog.Content }}</textarea>
@@ -14,5 +19,13 @@
         {{ end }}
     </div>
     <button type="submit" class="btn btn-primary" style="margin-top: 20px">提交</button>
-    <button type="reset" class="btn btn-danger" style="margin-top: 20px">重置</button>
+    <button type="button" class="btn btn-danger" style="margin-top: 20px" onclick="cancel()">取消</button>
 </form>
+<script type="application/javascript">
+    function cancel() {
+        window.location.href = "/admin/blog"
+    }
+    function getCategorys() {
+
+    }
+</script>

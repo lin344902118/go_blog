@@ -1,0 +1,35 @@
+<div class="blog-post">
+    <h2 class="blog-post-title">{{ .blog.Title }}</h2>
+    <p class="blog-post-meta">{{ .blog.PublicTime }} by <a href="/about">{{ .blog.Author }}</a></p>
+    {{ .blog.Content }}
+    {{ .blog.Category }}
+    <button class="btn btn-sm btn-primary" onclick="edit()">编辑</button>
+    <button class="btn btn-sm btn-danger" onclick="remove()">删除</button>
+</div>
+
+<script type="application/javascript">
+    function edit() {
+        window.location.href = "/admin/blog/edit?id={{ .blog.Id }}"
+    }
+    function remove() {
+        if (confirm("确认删除")) {
+            $.ajax({
+                type: "post",
+                url: "/admin/blog/delete?id={{ .blog.Id }}",
+                data: "",
+                async: false,
+                success: function (data) {
+                    if (data.ret == 0) {
+                        window.location.href = "/admin/blog";
+                    }
+                    else {
+                        alert("删除博文失败!失败原因:" + data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("删除博文错误!错误原因:" + data);
+                }
+            });
+        }
+    }
+</script>

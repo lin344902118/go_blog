@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"go_blog/models"
 	"errors"
-	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"go_blog/models"
 )
 
 func RegisterUser(username, password string) (error) {
@@ -12,7 +12,7 @@ func RegisterUser(username, password string) (error) {
 	user := models.User{Username:username,Password:Md5Encrypted(password)}
 	_, err := o.Insert(&user)
 	if err != nil {
-		fmt.Println(err)
+		beego.Warn("register user failed, err", err)
 		return errors.New("register error")
 	} else {
 		return nil

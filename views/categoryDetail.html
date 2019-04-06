@@ -1,0 +1,35 @@
+<div class="blog-post">
+    <h2 class="blog-post-title">{{ .category.Name }}</h2>
+    <p>
+         {{ .category.Description }}
+    </p>
+    <button class="btn btn-sm btn-primary" onclick="edit()">编辑</button>
+    <button class="btn btn-sm btn-danger" onclick="remove()">删除</button>
+</div>
+
+<script type="application/javascript">
+    function edit() {
+        window.location.href = "/admin/category/edit?id={{ .category.Id }}"
+    }
+    function remove() {
+        if (confirm("确认删除")) {
+            $.ajax({
+                type: "post",
+                url: "/admin/category/delete?id={{ .blog.Id }}",
+                data: "",
+                async: false,
+                success: function (data) {
+                    if (data.ret == 0) {
+                        window.location.href = "/admin/category";
+                    }
+                    else {
+                        alert("删除分类失败!失败原因:" + data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("删除分类错误!错误原因:" + data);
+                }
+            });
+        }
+    }
+</script>

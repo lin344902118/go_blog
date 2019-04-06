@@ -1,0 +1,32 @@
+package admin
+
+import (
+	"github.com/astaxie/beego"
+)
+
+type AdminController struct {
+	beego.Controller
+}
+
+type LoginUser struct{
+	Username string    `form:"username"`
+	Password string    `form:"password"`
+}
+
+type RegisterUser struct {
+	Username   string    `form:"username"`
+	Password   string    `form:"password"`
+	ConfirmPwd string    `form:"confirmPwd"`
+}
+
+type BlogInfo struct {
+	Id      int        `form:"id"`
+	Title   string     `form:"title"`
+	Content string     `form:"content"`
+}
+
+type CategoryInfo struct {
+	Id          int         `form:"id"`
+	Name        string      `form:"name"`
+	Description string      `form:"description"`
+}

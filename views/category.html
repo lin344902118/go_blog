@@ -1,10 +1,39 @@
 <div class="list-group">
     {{ range $index, $category := .categorys }}
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a href="/admin/category/detail?id={{ $category.Id }}" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">类型: {{ $category.Name }}</h5>
             </div>
             <p class="mb-1">描述: {{ $category.Description}}</p>
+            <button class="btn btn-sm btn-primary" onclick="edit({{ $category.Id }})">编辑</button>
+            <button class="btn btn-sm btn-danger" onclick="remove({{ $category.Id }})">删除</button>
         </a>
     {{ end }}
 </div>
+
+<script type="application/javascript">
+    function edit(id) {
+        window.location.href = "/admin/category/edit?id="+ id
+    }
+    function remove(id) {
+        if (confirm("确认删除")) {
+            $.ajax({
+                type: "post",
+                url: "/admin/category/delete?id=" + id,
+                data: "",
+                async: false,
+                success: function (data) {
+                    if (data.ret == 0) {
+                        window.location.href = "/admin/category";
+                    }
+                    else {
+                        alert("删除分类失败!失败原因:" + data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("删除分类错误!错误原因:" + data);
+                }
+            });
+        }
+    }
+</script>
