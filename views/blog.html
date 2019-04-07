@@ -3,10 +3,9 @@
     <a href="/admin/blog/detail?id={{ $blog.Id }}" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">标题: {{ $blog.Title }}</h5>
-            <small>发布时间: {{ $blog.PublicTime }}</small>
+            <small>发布时间: {{ $blog.PublicTime | formatTime }}</small>
         </div>
-        <p class="mb-1">内容: {{ $blog.Content}}</p>
-        <small>分类: {{ $blog.Category }}</small>
+        <p class="mb-1">内容: {{ str2html $blog.Content}}</p>
         <button class="btn btn-sm btn-primary" onclick="edit({{ $blog.Id }})">编辑</button>
         <button class="btn btn-sm btn-danger" onclick="remove({{ $blog.Id }})">删除</button>
     </a>

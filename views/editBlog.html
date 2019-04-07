@@ -10,15 +10,15 @@
     <div class="input-group">
         <textarea class="form-control" name="content">{{ .blog.Content }}</textarea>
     </div>
-    <div class="form-check">
-        {{ range $index, $category := .categorys }}
-            <input class="form-check-input" type="checkbox" id="{{ $category.Id }}">
-            <label class="form-check-label" for="defaultCheck1">
+    {{ range $index, $category := .categorys }}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="{{ $category.Id }}" name="categorys">
+            <label class="form-check-label">
                {{ $category.Name }}
             </label>
-        {{ end }}
-    </div>
-    <button type="submit" class="btn btn-primary" style="margin-top: 20px">提交</button>
+        </div>
+    {{ end }}
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px" onclick="getCategorys()">提交</button>
     <button type="button" class="btn btn-danger" style="margin-top: 20px" onclick="cancel()">取消</button>
 </form>
 <script type="application/javascript">
@@ -26,6 +26,14 @@
         window.location.href = "/admin/blog"
     }
     function getCategorys() {
-
+        var categorys = document.getElementsByName("categorys");
+        var allCategorys = new Array();
+        for (var i = 0; i < categorys.length; i++) {
+            if (categorys[i].checked) {
+                allCategorys.push(categorys[i].value)
+            }
+        }
+        categorys.value = allCategorys;
+        alert(categorys.value)
     }
 </script>

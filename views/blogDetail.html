@@ -1,8 +1,11 @@
 <div class="blog-post">
-    <h2 class="blog-post-title">{{ .blog.Title }}</h2>
-    <p class="blog-post-meta">{{ .blog.PublicTime }} by <a href="/about">{{ .blog.Author }}</a></p>
-    {{ .blog.Content }}
-    {{ .blog.Category }}
+    <h2 class="blog-post-title">标题:{{ .blog.Title }}</h2>
+    <p class="blog-post-meta">发布日期:{{ .blog.PublicTime | formatTime }}</p>
+    <p>内容:{{ str2html .blog.Content }}</p>
+    <p>分类:
+    {{ range $index, $category := .blog.Categorys }}
+        <a href="/admin/category/detail?id={{ $category.Id }}">{{ $category.Name }}</a>
+    {{ end }}</p>
     <button class="btn btn-sm btn-primary" onclick="edit()">编辑</button>
     <button class="btn btn-sm btn-danger" onclick="remove()">删除</button>
 </div>

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"math/rand"
+	"time"
 )
 
 const letters  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -22,4 +23,8 @@ func Translates(str string) string{
 		}
 	}
 	return str
+}
+
+func FormatTime(date time.Time) string {
+	return date.Format("2006-01-02 15:04:05")
 }

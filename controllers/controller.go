@@ -11,7 +11,7 @@ type MainController struct {
 
 func (c *MainController) Index() {
 	c.Layout = "layout.html"
-	blogs, err := utils.GetAllBlogs()
+	blogs, err := utils.GetAllBlogsWithCategorys()
 	if err != nil {
 		c.Data["error"] = utils.GET_BLOG_DATA_ERROR
 	} else {

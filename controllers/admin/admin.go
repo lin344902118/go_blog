@@ -20,9 +20,10 @@ type RegisterUser struct {
 }
 
 type BlogInfo struct {
-	Id      int        `form:"id"`
-	Title   string     `form:"title"`
-	Content string     `form:"content"`
+	Id       int        `form:"id"`
+	Title    string     `form:"title"`
+	Content  string     `form:"content"`
+	Category []int     `form:"categorys"`
 }
 
 type CategoryInfo struct {

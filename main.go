@@ -12,6 +12,7 @@ func main() {
 	beego.SetLogger("file", `{"filename": "test.log"}`)
 	beego.BeeLogger.DelLogger("console")
 	beego.AddFuncMap("translate", utils.Translates)
+	beego.AddFuncMap("formatTime", utils.FormatTime)
 	beego.Run()
 }
 

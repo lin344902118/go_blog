@@ -3,7 +3,6 @@ package admin
 import (
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"go_blog/models"
 	"go_blog/utils"
 )
@@ -79,7 +78,7 @@ func createOrUpdateCategory(categoryInfo CategoryInfo, c *AdminController) {
 	newCategory := models.Category{Id: categoryInfo.Id,
 		Name: categoryInfo.Name, Description: categoryInfo.Description}
 	if _, err := utils.GetCategory("Id", categoryInfo.Id); err != nil {
-		insertCategory(newCategory, c)
+		createCategory(newCategory, c)
 	} else {
 		newCategory.Id = categoryInfo.Id
 		updateCategory(newCategory, c)
@@ -87,8 +86,7 @@ func createOrUpdateCategory(categoryInfo CategoryInfo, c *AdminController) {
 }
 
 func updateCategory(newCategory models.Category, c *AdminController) {
-	o := orm.NewOrm()
-	_, err := o.Update(&newCategory)
+	err := utils.UpdateCategory(newCategory)
 	if err != nil {
 		beego.Warn(fmt.Sprintf("update category error.err:%s", err))
 		c.Data["error"] = utils.UPDATE_CATEGORY_ERROR
@@ -97,11 +95,10 @@ func updateCategory(newCategory models.Category, c *AdminController) {
 	}
 }
 
-func insertCategory(category models.Category, c *AdminController) {
-	o := orm.NewOrm()
-	id, err := o.Insert(&category)
+func createCategory(category models.Category, c *AdminController) {
+	id, err := utils.CreateCategory(category)
 	if err != nil {
-		beego.Warn(fmt.Sprintf("insert category error.err:%s", err))
+		beego.Warn(fmt.Sprintf("create category error.err:%s", err))
 		c.Data["error"] = utils.CREATE_CATEGORY_ERROR
 	} else {
 		c.Redirect(fmt.Sprintf("/admin/category/detail?id=%d", id), 302)
@@ -135,5 +132,6 @@ func getCategoryDetail(c *AdminController) {
 		category, _ := utils.GetCategory("Id", categoryId)
 		c.Data["category"] = category
 	}
+	c.Data["edit"] = "true"
 	c.TplName = "categoryDetail.html"
 }

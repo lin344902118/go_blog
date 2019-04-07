@@ -20,5 +20,4 @@ const(
 	DELETE_CATEGORY_ERROR = "删除分类失败"
 	UPDATE_BLOG_ERROR = "更新博文失败"
 	UPDATE_CATEGORY_ERROR = "更新分类失败"
-	UNMARSHAL_JSONRESULT_ERROR = "解析成json失败"
 )
