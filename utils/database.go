@@ -142,3 +142,13 @@ func DeleteCategory(id int) error {
 	_, err := o.Delete(&models.Category{Id:id})
 	return err
 }
+
+func SearchBlog(search string, limit int) ([]models.Blog, error) {
+	var blogs []models.Blog
+	cond := orm.NewCondition()
+	condition := cond.And("title__icontains", search).Or("content__icontains", search)
+	qs := orm.NewOrm().QueryTable("blog")
+	qs = qs.SetCond(condition)
+	_, err := qs.Limit(limit).All(&blogs)
+	return blogs, err
+}

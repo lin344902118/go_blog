@@ -20,4 +20,5 @@ const(
 	DELETE_CATEGORY_ERROR = "删除分类失败"
 	UPDATE_BLOG_ERROR = "更新博文失败"
 	UPDATE_CATEGORY_ERROR = "更新分类失败"
+	SEARCH_BLOG_ERROR = "搜索博文失败"
 )
