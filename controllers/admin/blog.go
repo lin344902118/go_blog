@@ -17,13 +17,14 @@ func (c *AdminController) Blog() {
 func (c *AdminController) EditBlog() {
 	getUserOrRedirectLogin(c)
 	RenderLayout(c, "blog")
-	if c.Ctx.Input.Method() == "GET" {
-		getEditBlog(c)
-	} else if c.Ctx.Input.Method() == "POST" {
-		postEditBlog(c)
-	} else {
-		c.Abort("405")
-	}
+	getEditBlog(c)
+
+}
+
+func (c *AdminController) PostBlog() {
+	getUserOrRedirectLogin(c)
+	RenderLayout(c, "blog")
+	postEditBlog(c)
 }
 
 func (c *AdminController) BlogDetail() {
@@ -66,7 +67,7 @@ func getAndRenderBlogs(c *AdminController) {
 }
 
 func postEditBlog(c *AdminController) {
-	var blogInfo BlogInfo
+	var blogInfo models.BlogInfo
 	if err := c.ParseForm(&blogInfo); err != nil {
 		c.Data["error"] = utils.PARSE_BLOG_DATA_ERROR
 	} else {
@@ -76,7 +77,7 @@ func postEditBlog(c *AdminController) {
 	c.TplName = "blog.html"
 }
 
-func getCategorysById(blogInfo BlogInfo, c *AdminController) []*models.Category {
+func getCategorysById(blogInfo models.BlogInfo, c *AdminController) []*models.Category {
 	var categorys []*models.Category
 	for _, id := range blogInfo.Category {
 		category, err := utils.GetCategory("id", id)
@@ -90,7 +91,7 @@ func getCategorysById(blogInfo BlogInfo, c *AdminController) []*models.Category 
 	return categorys
 }
 
-func createOrUpdateBlog(c *AdminController, blogInfo BlogInfo, categorys []*models.Category) {
+func createOrUpdateBlog(c *AdminController, blogInfo models.BlogInfo, categorys []*models.Category) {
 	userId := c.GetSession("userId")
 	newBlog := models.Blog{Title: blogInfo.Title,PublicTime:time.Now(),
 		Content: blogInfo.Content, Author: &models.User{Id: userId.(int)}}

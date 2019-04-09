@@ -31,8 +31,8 @@ type Blog struct {
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	//orm.RegisterDataBase("default", "mysql", "lgh:12345678@tcp(192.168.199.244:3306)/gosql?charset=utf8")
-	orm.RegisterDataBase("default", "mysql", "lgh:12345678@tcp(172.16.0.208:3306)/gosql?charset=utf8")
+	orm.RegisterDataBase("default", "mysql", "lgh:12345678@tcp(192.168.199.244:3306)/gosql?charset=utf8")
+	//orm.RegisterDataBase("default", "mysql", "lgh:12345678@tcp(172.16.0.208:3306)/gosql?charset=utf8")
 	orm.RegisterModel(new(User), new(Category), new(Blog))
 	orm.RunSyncdb("default", false, true)
 

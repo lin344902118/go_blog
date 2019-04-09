@@ -20,7 +20,7 @@
                 type: "post",
                 url: "/admin/blog/delete?id={{ .blog.Id }}",
                 data: "",
-                async: false,
+                async: true,
                 success: function (data) {
                     if (data.ret == 0) {
                         window.location.href = "/admin/blog";

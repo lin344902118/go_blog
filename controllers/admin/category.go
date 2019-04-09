@@ -16,13 +16,13 @@ func (c *AdminController) Category() {
 func (c *AdminController) EditCategory() {
 	getUserOrRedirectLogin(c)
 	RenderLayout(c, "category")
-	if c.Ctx.Input.Method() == "GET" {
-		getEditCategory(c)
-	} else if c.Ctx.Input.Method() == "POST" {
-		postEditCategory(c)
-	} else {
-		c.Abort("405")
-	}
+	getEditCategory(c)
+}
+
+func (c *AdminController) PostCategory() {
+	getUserOrRedirectLogin(c)
+	RenderLayout(c, "category")
+	postEditCategory(c)
 }
 
 func (c *AdminController) CategoryDetail() {
@@ -66,7 +66,7 @@ func getAndRenderCategorys(c *AdminController) {
 
 func postEditCategory(c *AdminController) {
 	c.TplName = "category.html"
-	var categoryInfo CategoryInfo
+	var categoryInfo models.CategoryInfo
 	if err := c.ParseForm(&categoryInfo); err != nil {
 		c.Data["error"] = utils.PARSE_CATEGORY_DATA_ERROR
 	} else {
@@ -74,7 +74,7 @@ func postEditCategory(c *AdminController) {
 	}
 }
 
-func createOrUpdateCategory(categoryInfo CategoryInfo, c *AdminController) {
+func createOrUpdateCategory(categoryInfo models.CategoryInfo, c *AdminController) {
 	newCategory := models.Category{Id: categoryInfo.Id,
 		Name: categoryInfo.Name, Description: categoryInfo.Description}
 	if _, err := utils.GetCategory("Id", categoryInfo.Id); err != nil {

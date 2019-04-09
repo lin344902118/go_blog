@@ -21,7 +21,7 @@
                 type: "post",
                 url: "/admin/category/delete?id=" + id,
                 data: "",
-                async: false,
+                async: true,
                 success: function (data) {
                     if (data.ret == 0) {
                         window.location.href = "/admin/category";

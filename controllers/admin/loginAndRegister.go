@@ -35,7 +35,7 @@ func checkLoginAndRedirect(c *AdminController) {
 }
 
 func parseLoginInfo(c *AdminController) {
-	var user LoginUser
+	var user models.LoginUser
 	if err := c.ParseForm(&user); err != nil {
 		c.Data["errMsg"] = utils.PARSE_USERNAME_PASSWORD_ERROR
 	} else {
@@ -43,7 +43,7 @@ func parseLoginInfo(c *AdminController) {
 	}
 }
 
-func checkLoginUserExists(user LoginUser, c *AdminController) {
+func checkLoginUserExists(user models.LoginUser, c *AdminController) {
 	u, err := utils.GetUser("Username", user.Username)
 	if err != nil {
 		c.Data["errMsg"] = utils.USER_NOT_EXIST
@@ -54,7 +54,7 @@ func checkLoginUserExists(user LoginUser, c *AdminController) {
 	}
 }
 
-func validatePassword(user LoginUser, u models.User, c *AdminController) {
+func validatePassword(user models.LoginUser, u models.User, c *AdminController) {
 	encrypt := utils.Md5Encrypted(user.Password)
 	if encrypt == u.Password {
 		// login successfully
@@ -67,7 +67,7 @@ func validatePassword(user LoginUser, u models.User, c *AdminController) {
 }
 
 func parseRegisterInfo(c *AdminController) {
-	var rUser RegisterUser
+	var rUser models.RegisterUser
 	if err := c.ParseForm(&rUser); err != nil {
 		c.Data["error"] = utils.PARSE_USERNAME_PASSWORD_ERROR
 	} else {
@@ -75,7 +75,7 @@ func parseRegisterInfo(c *AdminController) {
 	}
 }
 
-func ValidateTwoPassword(rUser RegisterUser, c *AdminController) {
+func ValidateTwoPassword(rUser models.RegisterUser, c *AdminController) {
 	if rUser.Password != rUser.ConfirmPwd {
 		c.Data["errMsg"] = utils.TWO_PASSWORD_NOT_MATCH
 	} else {
@@ -83,7 +83,7 @@ func ValidateTwoPassword(rUser RegisterUser, c *AdminController) {
 	}
 }
 
-func checkRegisterUserExist(rUser RegisterUser, c *AdminController) {
+func checkRegisterUserExist(rUser models.RegisterUser, c *AdminController) {
 	user, err := utils.GetUser("Username", rUser.Username)
 	if err == nil {
 		c.Data["errMsg"] = utils.USER_EXISTS
@@ -92,7 +92,7 @@ func checkRegisterUserExist(rUser RegisterUser, c *AdminController) {
 	}
 }
 
-func registerAndRedirect(rUser RegisterUser, c *AdminController, user models.User) {
+func registerAndRedirect(rUser models.RegisterUser, c *AdminController, user models.User) {
 	err := utils.RegisterUser(rUser.Username, rUser.Password)
 	if err != nil {
 		c.Data["errMsg"] = utils.REGISTER_FAILED

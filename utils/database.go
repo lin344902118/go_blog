@@ -78,11 +78,13 @@ func CreateBlogWithCategorys(blog models.Blog, categorys []*models.Category) (in
 	// todo Should create a transaction instead of this
 	// insert blog
 	id, err := o.Insert(&blog)
-	// insert m2m
-	m2m := o.QueryM2M(&blog, "Categorys")
-	_, err = m2m.Add(categorys)
-	if err != nil {
-		return -1, err
+	if categorys != nil {
+		// insert m2m
+		m2m := o.QueryM2M(&blog, "Categorys")
+		_, err = m2m.Add(categorys)
+		if err != nil {
+			return -1, err
+		}
 	}
 	return id, err
 }
