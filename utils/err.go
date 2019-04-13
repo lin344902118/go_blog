@@ -21,4 +21,6 @@ const(
 	UPDATE_BLOG_ERROR = "更新博文失败"
 	UPDATE_CATEGORY_ERROR = "更新分类失败"
 	SEARCH_BLOG_ERROR = "搜索博文失败"
+	SEARCH_CONTENT_BLANK_ERROR = "搜索内容为空"
+	SEARCH_ERROR = "搜索失败"
 )

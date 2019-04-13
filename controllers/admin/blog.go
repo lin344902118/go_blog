@@ -8,56 +8,35 @@ import (
 	"time"
 )
 
-func (c *AdminController) Blog() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "blog")
-	getAndRenderBlogs(c)
+func (c *AdminController) GetBlog() {
+	director := GetBlogDirector(c, &GetBlog{})
+	director.getModel()
 }
 
 func (c *AdminController) EditBlog() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "blog")
-	getEditBlog(c)
-
+	director := GetBlogDirector(c, &EditBlog{})
+	director.getModel()
 }
 
 func (c *AdminController) PostBlog() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "blog")
-	postEditBlog(c)
+	director := GetBlogDirector(c, &PostBlog{})
+	director.getModel()
 }
 
 func (c *AdminController) BlogDetail() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "blog")
-	getBlogDetail(c)
+	director := GetBlogDirector(c, &BlogDetail{})
+	director.getModel()
 }
 
 func (c *AdminController) DeleteBlog() {
-	var blogId int
-	var ret = 1
-	var message = ""
-	_, err := GetUserBySession(c)
-	if err != nil {
-		message = utils.USER_NOT_LOGIN
-	} else {
-		if err := c.Ctx.Input.Bind(&blogId, "id"); err != nil {
-			message = utils.ID_NO_FOUND
-		} else {
-			if err = utils.DeleteBlog(blogId); err != nil {
-				message = utils.DELETE_BLOG_ERROR
-			} else {
-				ret = 0
-				message = "删除成功"
-			}
-		}
-	}
-	c.Data["json"] = map[string]interface{}{"ret":ret,"message":message}
-	c.ServeJSON()
+	DeleteRecordAndReturnJson(c, utils.DeleteBlog, utils.DELETE_BLOG_ERROR)
 }
 
+type GetBlog struct {
+	Admin
+}
 
-func getAndRenderBlogs(c *AdminController) {
+func (self *GetBlog) RenderData(c *AdminController){
 	if blogs, err := utils.GetAllBlogs(); err != nil {
 		c.Data["error"] = utils.GET_BLOG_DATA_ERROR
 	} else {
@@ -66,7 +45,30 @@ func getAndRenderBlogs(c *AdminController) {
 	c.TplName = "blog.html"
 }
 
-func postEditBlog(c *AdminController) {
+type EditBlog struct {
+	Admin
+}
+
+func (self *EditBlog) RenderData(c *AdminController) {
+	var blogId int
+	c.LayoutSections = make(map[string]string)
+	c.LayoutSections["Script"] = "tinymceScript.html"
+	c.Data["edit"] = "true"
+	c.Layout = "admin.html"
+	categorys := GetCategory{}
+	categorys.RenderData(c)
+	// overwrite TplName
+	c.TplName = "editBlog.html"
+	if err := c.Ctx.Input.Bind(&blogId, "id"); err == nil && blogId != 0 {
+		getAndRenderBlog(blogId, c)
+	}
+}
+
+type PostBlog struct {
+	Admin
+}
+
+func (self *PostBlog) RenderData(c *AdminController) {
 	var blogInfo models.BlogInfo
 	if err := c.ParseForm(&blogInfo); err != nil {
 		c.Data["error"] = utils.PARSE_BLOG_DATA_ERROR
@@ -75,6 +77,26 @@ func postEditBlog(c *AdminController) {
 		createOrUpdateBlog(c, blogInfo, categorys)
 	}
 	c.TplName = "blog.html"
+}
+
+type BlogDetail struct {
+	Admin
+}
+
+func (self *BlogDetail) RenderData(c *AdminController)  {
+	var blogId int
+	if err := c.Ctx.Input.Bind(&blogId, "id"); err != nil || blogId == 0  {
+		c.Data["error"] = utils.ID_NO_FOUND
+	} else {
+		blog, err := utils.GetBlogWithCategorys("Id", blogId)
+		if err != nil {
+			c.Data["error"] = utils.GET_BLOG_DATA_ERROR
+		} else {
+			c.Data["blog"] = blog
+		}
+	}
+	c.Data["edit"] = "true"
+	c.TplName = "blogDetail.html"
 }
 
 func getCategorysById(blogInfo models.BlogInfo, c *AdminController) []*models.Category {
@@ -125,20 +147,6 @@ func updateBlog(newBlog models.Blog,  c *AdminController, categorys []*models.Ca
 	}
 }
 
-func getEditBlog(c *AdminController) {
-	var blogId int
-	c.LayoutSections = make(map[string]string)
-	c.LayoutSections["Script"] = "tinymceScript.html"
-	c.Data["edit"] = "true"
-	c.Layout = "admin.html"
-	getAndRenderCategorys(c)
-	// overwrite TplName
-	c.TplName = "editBlog.html"
-	if err := c.Ctx.Input.Bind(&blogId, "id"); err == nil && blogId != 0 {
-		getAndRenderBlog(blogId, c)
-	}
-}
-
 func getAndRenderBlog(blogId int, c *AdminController) {
 	blog, err := utils.GetBlog("Id", blogId)
 	if err != nil {
@@ -146,20 +154,4 @@ func getAndRenderBlog(blogId int, c *AdminController) {
 	} else {
 		c.Data["blog"] = blog
 	}
-}
-
-func getBlogDetail(c *AdminController) {
-	var blogId int
-	if err := c.Ctx.Input.Bind(&blogId, "id"); err != nil || blogId == 0  {
-		c.Data["error"] = utils.ID_NO_FOUND
-	} else {
-		blog, err := utils.GetBlogWithCategorys("Id", blogId)
-		if err != nil {
-			c.Data["error"] = utils.GET_BLOG_DATA_ERROR
-		} else {
-			c.Data["blog"] = blog
-		}
-	}
-	c.Data["edit"] = "true"
-	c.TplName = "blogDetail.html"
 }

@@ -7,54 +7,35 @@ import (
 	"go_blog/utils"
 )
 
-func (c *AdminController) Category() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "category")
-	getAndRenderCategorys(c)
+func (c *AdminController) GetCategory() {
+	director := GetCategoryDirector(c, &GetCategory{})
+	director.getModel()
 }
 
 func (c *AdminController) EditCategory() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "category")
-	getEditCategory(c)
+	director := GetCategoryDirector(c, &EditCategory{})
+	director.getModel()
 }
 
 func (c *AdminController) PostCategory() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "category")
-	postEditCategory(c)
+	director := GetCategoryDirector(c, &PostCategory{})
+	director.getModel()
 }
 
 func (c *AdminController) CategoryDetail() {
-	getUserOrRedirectLogin(c)
-	RenderLayout(c, "category")
-	getCategoryDetail(c)
+	director := GetCategoryDirector(c, &CategoryDetail{})
+	director.getModel()
 }
 
 func (c *AdminController) DeleteCategory() {
-	var categoryId int
-	var ret = 1
-	var message = ""
-	_, err := GetUserBySession(c)
-	if err != nil {
-		message = utils.USER_NOT_LOGIN
-	} else {
-		if err := c.Ctx.Input.Bind(&categoryId, "id"); err != nil {
-			message = utils.ID_NO_FOUND
-		} else {
-			if err = utils.DeleteCategory(categoryId); err != nil {
-				message = utils.DELETE_CATEGORY_ERROR
-			} else {
-				ret = 0
-				message = "删除成功"
-			}
-		}
-	}
-	c.Data["json"] = map[string]interface{}{"ret":ret,"message":message}
-	c.ServeJSON()
+	DeleteRecordAndReturnJson(c, utils.DeleteCategory, utils.DELETE_CATEGORY_ERROR)
 }
 
-func getAndRenderCategorys(c *AdminController) {
+type GetCategory struct {
+	Admin
+}
+
+func (self *GetCategory) RenderData(c *AdminController) {
 	categorys, err := utils.GetAllCategorys()
 	if err != nil {
 		c.Data["error"] = utils.GET_CATEGORY_DATA_ERROR
@@ -64,7 +45,25 @@ func getAndRenderCategorys(c *AdminController) {
 	c.TplName = "category.html"
 }
 
-func postEditCategory(c *AdminController) {
+type EditCategory struct {
+	Admin
+}
+
+func (self *EditCategory) RenderData(c *AdminController) {
+	var categoryId int
+	c.Data["edit"] = "true"
+	c.Layout = "admin.html"
+	c.TplName = "editCategory.html"
+	if err := c.Ctx.Input.Bind(&categoryId, "id"); err == nil && categoryId != 0 {
+		getAndRenderCategory(categoryId, c)
+	}
+}
+
+type PostCategory struct {
+	Admin
+}
+
+func (self *PostCategory) RenderData(c *AdminController) {
 	c.TplName = "category.html"
 	var categoryInfo models.CategoryInfo
 	if err := c.ParseForm(&categoryInfo); err != nil {
@@ -72,6 +71,22 @@ func postEditCategory(c *AdminController) {
 	} else {
 		createOrUpdateCategory(categoryInfo, c)
 	}
+}
+
+type CategoryDetail struct {
+	Admin
+}
+
+func (self *CategoryDetail) RenderData(c *AdminController) {
+	var categoryId int
+	if err := c.Ctx.Input.Bind(&categoryId, "id"); err != nil || categoryId == 0 {
+		c.Data["error"] = utils.ID_NO_FOUND
+	} else {
+		category, _ := utils.GetCategory("Id", categoryId)
+		c.Data["category"] = category
+	}
+	c.Data["edit"] = "true"
+	c.TplName = "categoryDetail.html"
 }
 
 func createOrUpdateCategory(categoryInfo models.CategoryInfo, c *AdminController) {
@@ -105,16 +120,6 @@ func createCategory(category models.Category, c *AdminController) {
 	}
 }
 
-func getEditCategory(c *AdminController) {
-	var categoryId int
-	c.Data["edit"] = "true"
-	c.Layout = "admin.html"
-	c.TplName = "editCategory.html"
-	if err := c.Ctx.Input.Bind(&categoryId, "id"); err == nil && categoryId != 0 {
-		getAndRenderCategory(categoryId, c)
-	}
-}
-
 func getAndRenderCategory(categoryId int, c *AdminController) {
 	category, err := utils.GetCategory("Id", categoryId)
 	if err != nil {
@@ -122,16 +127,4 @@ func getAndRenderCategory(categoryId int, c *AdminController) {
 	} else {
 		c.Data["category"] = category
 	}
-}
-
-func getCategoryDetail(c *AdminController) {
-	var categoryId int
-	if err := c.Ctx.Input.Bind(&categoryId, "id"); err != nil || categoryId == 0 {
-		c.Data["error"] = utils.ID_NO_FOUND
-	} else {
-		category, _ := utils.GetCategory("Id", categoryId)
-		c.Data["category"] = category
-	}
-	c.Data["edit"] = "true"
-	c.TplName = "categoryDetail.html"
 }
